@@ -15,7 +15,9 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(28, 28, 28);</string>
+    <string notr="true">
+    background-color: rgb(240, 248, 255);
+    </string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
@@ -30,8 +32,10 @@
        <item>
         <widget class="QLabel" name="titleLabel">
          <property name="styleSheet">
-          <string notr="true">color: rgb(255, 255, 255);
-          font: 87 16pt "Arial Black";</string>
+          <string notr="true">
+          color: rgb(25, 42, 86);
+          font: 87 16pt "Arial Black";
+          </string>
          </property>
          <property name="text">
           <string>Simulador de Cifrados</string>
@@ -65,12 +69,19 @@
              <string>Texto a Cifrar</string>
             </property>
             <property name="styleSheet">
-             <string notr="true">color: rgb(255, 255, 255);</string>
+             <string notr="true">color: rgb(0, 102, 204);</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QTextEdit" name="textToEncrypt"/>
+           <widget class="QTextEdit" name="textToEncrypt">
+            <property name="styleSheet">
+             <string notr="true">
+             background-color: rgb(224, 242, 255);
+             border: 1px solid rgb(0, 102, 204);
+             </string>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QLabel" name="keyLabel">
@@ -78,12 +89,19 @@
              <string>Clave (solo Vigenère)</string>
             </property>
             <property name="styleSheet">
-             <string notr="true">color: rgb(255, 255, 255);</string>
+             <string notr="true">color: rgb(0, 102, 204);</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QTextEdit" name="keyInput"/>
+           <widget class="QTextEdit" name="keyInput">
+            <property name="styleSheet">
+             <string notr="true">
+             background-color: rgb(224, 242, 255);
+             border: 1px solid rgb(0, 102, 204);
+             </string>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QLabel" name="cipherLabel">
@@ -91,12 +109,18 @@
              <string>Tipo de Cifrado</string>
             </property>
             <property name="styleSheet">
-             <string notr="true">color: rgb(255, 255, 255);</string>
+             <string notr="true">color: rgb(0, 102, 204);</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QComboBox" name="cipherType">
+            <property name="styleSheet">
+             <string notr="true">
+             background-color: rgb(224, 242, 255);
+             border: 1px solid rgb(0, 102, 204);
+             </string>
+            </property>
             <item>
              <property name="text">
               <string>Cifrado César</string>
@@ -115,7 +139,10 @@
              <string>Cifrar</string>
             </property>
             <property name="styleSheet">
-             <string notr="true">background-color: rgb(0, 170, 0); color: white;</string>
+             <string notr="true">
+             background-color: rgb(30, 144, 255);
+             color: white;
+             </string>
             </property>
            </widget>
           </item>
@@ -125,7 +152,10 @@
              <string>Descifrar</string>
             </property>
             <property name="styleSheet">
-             <string notr="true">background-color: rgb(255, 0, 0); color: white;</string>
+             <string notr="true">
+             background-color: rgb(255, 69, 0);
+             color: white;
+             </string>
             </property>
            </widget>
           </item>
@@ -147,12 +177,19 @@
              <string>Texto Descifrado:</string>
             </property>
             <property name="styleSheet">
-             <string notr="true">color: rgb(255, 255, 255);</string>
+             <string notr="true">color: rgb(0, 102, 204);</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QTextEdit" name="decryptedText"/>
+           <widget class="QTextEdit" name="decryptedText">
+            <property name="styleSheet">
+             <string notr="true">
+             background-color: rgb(224, 242, 255);
+             border: 1px solid rgb(0, 102, 204);
+             </string>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
