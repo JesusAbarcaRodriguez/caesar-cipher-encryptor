@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
+    <width>900</width>
     <height>450</height>
    </rect>
   </property>
@@ -66,7 +66,7 @@
           <item>
            <widget class="QLabel" name="wordLabel">
             <property name="text">
-             <string>Texto a Cifrar</string>
+             <string>TEXTO ORIGINAL</string>
             </property>
             <property name="styleSheet">
              <string notr="true">color: rgb(0, 102, 204);</string>
@@ -84,9 +84,43 @@
            </widget>
           </item>
           <item>
+           <layout class="QHBoxLayout" name="horizontalLayoutCipherOptions">
+            <item>
+             <widget class="QLabel" name="cipherTypeLabel">
+              <property name="text">
+               <string>Tipo de Cifrado:</string>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: rgb(0, 102, 204);</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cipherType">
+              <property name="styleSheet">
+               <string notr="true">
+               background-color: rgb(224, 242, 255);
+               border: 1px solid rgb(0, 102, 204);
+               </string>
+              </property>
+              <item>
+               <property name="text">
+                <string>Cifrado César</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Cifrado Vigenère</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
            <widget class="QLabel" name="keyLabel">
             <property name="text">
-             <string>Clave (solo Vigenère)</string>
+             <string>Clave:</string>
             </property>
             <property name="styleSheet">
              <string notr="true">color: rgb(0, 102, 204);</string>
@@ -94,66 +128,23 @@
            </widget>
           </item>
           <item>
-           <widget class="QTextEdit" name="keyInput">
+           <widget class="QLineEdit" name="keyInput">
             <property name="styleSheet">
              <string notr="true">
              background-color: rgb(224, 242, 255);
              border: 1px solid rgb(0, 102, 204);
              </string>
             </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="cipherLabel">
-            <property name="text">
-             <string>Tipo de Cifrado</string>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">color: rgb(0, 102, 204);</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="cipherType">
-            <property name="styleSheet">
-             <string notr="true">
-             background-color: rgb(224, 242, 255);
-             border: 1px solid rgb(0, 102, 204);
-             </string>
-            </property>
-            <item>
-             <property name="text">
-              <string>Cifrado César</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Cifrado Vigenère</string>
-             </property>
-            </item>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="encryptButton">
             <property name="text">
-             <string>Cifrar</string>
+             <string>CIFRAR</string>
             </property>
             <property name="styleSheet">
              <string notr="true">
              background-color: rgb(30, 144, 255);
-             color: white;
-             </string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="decryptButton">
-            <property name="text">
-             <string>Descifrar</string>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">
-             background-color: rgb(255, 69, 0);
              color: white;
              </string>
             </property>
@@ -174,7 +165,7 @@
           <item>
            <widget class="QLabel" name="outputLabel">
             <property name="text">
-             <string>Texto Descifrado:</string>
+             <string>TEXTO CIFRADO</string>
             </property>
             <property name="styleSheet">
              <string notr="true">color: rgb(0, 102, 204);</string>
@@ -187,6 +178,19 @@
              <string notr="true">
              background-color: rgb(224, 242, 255);
              border: 1px solid rgb(0, 102, 204);
+             </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="decryptButton">
+            <property name="text">
+             <string>DESCIFRAR</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">
+             background-color: rgb(255, 69, 0);
+             color: white;
              </string>
             </property>
            </widget>

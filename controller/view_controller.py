@@ -11,21 +11,23 @@ class MainView(QMainWindow):
         text_to_encrypt = self.textToEncrypt.toPlainText()
 
 
-        key_input = self.keyInput.toPlainText()
+        key_input = self.keyInput.text()
 
 
         cipher_type = self.cipherType.currentText()
         if cipher_type == "Cifrado César":
-           self.generate_custom_alphabet(key_input, text_to_encrypt)
+           self.generate_cesar_cipher(key_input, text_to_encrypt)
         elif cipher_type == "Cifrado Vigenère":
-            print("Cifrado Vigenère")
-        # Mostrar el texto cifrado en el campo de salida
+            self.generate_vigenere_cipher(key_input, text_to_encrypt)
         
 
-    def generate_custom_alphabet(self, key, text):
+    def generate_cesar_cipher(self, key, text):
         alphabet = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
         alphabet_aux = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
         key = ''.join(sorted(set(key), key=key.index))
+
+        key = key.upper()
+        text = text.upper()
 
         for char in key:
             alphabet = alphabet.replace(char, "")
@@ -43,4 +45,39 @@ class MainView(QMainWindow):
                 encrypted_text += char
 
         self.decryptedText.setPlainText(alphabet_aux + "\n" +custom_alphabet + "\n" +encrypted_text)
+
+    def generate_vigenere_cipher(self, key, text):
+        vigenere_matrix = []
+        alphabet = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
+        encrypted_text = ""
+        key = key.upper()
+        text = text.upper()
+        for i in range(len(alphabet)):
+            row = alphabet[i:] + alphabet[:i]
+            vigenere_matrix.append(list(row))
+        countText = 0
+        countKey = 0
+        for j in range(27):
+            if text[countText] == vigenere_matrix[0][j]:
+                for i in range(27):
+                    if countKey < len(key):
+                        if key[countKey] == vigenere_matrix[i][0]:
+                            encrypted_text = encrypted_text + vigenere_matrix[i][j]
+                            countText += 1
+                            countKey += 1
+                            i = 0
+                            j = 0
+                            break
+                    else:
+                        countKey = 0
+                        if key[countKey] == vigenere_matrix[0][j]:
+                            encrypted_text = vigenere_matrix[i][j]
+                            countText += 1
+                            countKey += 1
+                            i = 0
+                            j = 0
+        self.decryptedText.setPlainText(encrypted_text)
+
+                
+ 
 
