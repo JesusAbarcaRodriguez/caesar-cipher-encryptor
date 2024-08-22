@@ -52,30 +52,30 @@ class MainView(QMainWindow):
         encrypted_text = ""
         key = key.upper()
         text = text.upper()
+
+        # Crear la matriz Vigenère
         for i in range(len(alphabet)):
             row = alphabet[i:] + alphabet[:i]
             vigenere_matrix.append(list(row))
+
         countText = 0
         countKey = 0
-        for j in range(27):
-            if text[countText] == vigenere_matrix[0][j]:
-                for i in range(27):
-                    if countKey < len(key):
+
+        while countText < len(text):
+            j = 0
+            while j < len(alphabet):
+                if text[countText] == vigenere_matrix[0][j]:
+                    i = 0
+                    while i < len(alphabet):
                         if key[countKey] == vigenere_matrix[i][0]:
-                            encrypted_text = encrypted_text + vigenere_matrix[i][j]
+                            encrypted_text += vigenere_matrix[i][j]
                             countText += 1
-                            countKey += 1
-                            i = 0
-                            j = 0
-                            break
-                    else:
-                        countKey = 0
-                        if key[countKey] == vigenere_matrix[0][j]:
-                            encrypted_text = vigenere_matrix[i][j]
-                            countText += 1
-                            countKey += 1
-                            i = 0
-                            j = 0
+                            countKey = (countKey + 1) % len(key)  # Resetear key si es necesario
+                            break  # Salir del bucle de filas
+                        i += 1
+                    break  # Salir del bucle de columnas
+                j += 1
+
         self.decryptedText.setPlainText(encrypted_text)
 
                 
