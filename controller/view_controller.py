@@ -10,6 +10,7 @@ class MainView(QMainWindow):
         uic.loadUi("view/view.ui", self)
         self.encryptButton.clicked.connect(self.encrypt_text)
         self.cipherType.currentIndexChanged.connect(self.toggle_key_input)
+        self.decryptButton.clicked.connect(self.desencrypt_text)
 
     def toggle_key_input(self):
         cipher_type = self.cipherType.currentText()
@@ -25,25 +26,117 @@ class MainView(QMainWindow):
             self.keyLabel.show()
 
     def encrypt_text(self):
-        text_to_encrypt = self.textToEncrypt.toPlainText()
+        text_to_encrypt = self.textToEncrypt.toPlainText().upper()
         cipher_type = self.cipherType.currentText()
 
         if cipher_type == "Cifrado César con secuencia":
             try:
                 sequence_number = int(self.keyInput.text())
-                if 1 <= sequence_number <= 25:
+                if 1 <= sequence_number <= 27:
                     self.generate_cesar_cipher_with_sequence(text_to_encrypt, sequence_number)
                 else:
-                    self.show_error_message("Por favor ingrese un número válido (1-25).")
+                    self.show_error_message("Por favor ingrese un número válido (1-27).")
             except ValueError:
                 self.show_error_message("Por favor ingrese un número válido.")
         else:
             key_input = self.keyInput.text()
-            if cipher_type == "Cifrado César":
+            if cipher_type == "Cifrado César con palabra clave":
                 self.generate_cesar_cipher(key_input, text_to_encrypt)
             elif cipher_type == "Cifrado Vigenère":
                 self.generate_vigenere_cipher(key_input, text_to_encrypt)
+    
+    def desencrypt_text(self):
+        text_to_desencrypt = self.decryptedText.toPlainText().upper()
+        cipher_type = self.cipherType.currentText()
+
+        if cipher_type == "Cifrado César con secuencia":
+            try:    
+                self.brute_force_cesar_cipher(text_to_desencrypt)
+            except ValueError:
+                self.show_error_message("Por favor ingrese un número válido.")
+        else:
+            key_input = self.keyInput.text()
+            if cipher_type == "Cifrado César con palabra clave":
+                self.brute_force_cesar_cipher_with_key(text_to_desencrypt, key_input)
+            elif cipher_type == "Cifrado Vigenère":
+                self.decrypt_vigenere_cipher(key_input, text_to_desencrypt)
         
+    def brute_force_cesar_cipher(self, encrypted_text):
+        alphabet = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
+        results = []
+
+        for sequence in range(1, 28):
+            decrypted_text = ""
+            alphabet_with_secuence = alphabet[sequence:] + alphabet[:sequence]
+            for char in encrypted_text:
+                if char in alphabet_with_secuence:
+                    pos = alphabet_with_secuence.index(char)
+                    decrypted_text += alphabet[pos]
+                else:
+                    decrypted_text += char
+
+            results.append(f"Desplazamiento {sequence}: {decrypted_text}")
+
+        self.textToEncrypt.setPlainText("\n\n".join(results))
+        
+    def brute_force_cesar_cipher_with_key(self, encrypted_text, key):
+        alphabet = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
+        results = []
+
+        # Crear un alfabeto modificado basado en la palabra clave
+        key = ''.join(sorted(set(key.upper()), key=key.index))  # Remover duplicados y mantener orden
+        alphabet_modificado = key + ''.join([char for char in alphabet if char not in key])
+
+        # Aplicar fuerza bruta probando todos los desplazamientos posibles
+        for sequence in range(1, 28):
+            decrypted_text = ""
+            alphabet_with_secuence = alphabet_modificado[sequence:] + alphabet_modificado[:sequence]
+            for char in encrypted_text:
+                if char in alphabet_with_secuence:
+                    pos = alphabet_with_secuence.index(char)
+                    decrypted_text += alphabet[pos]
+                else:
+                    decrypted_text += char
+
+            results.append(f"Desplazamiento {sequence}: {decrypted_text}")
+
+        self.textToEncrypt.setPlainText("\n\n".join(results))
+
+    def decrypt_vigenere_cipher(self, key, encrypted_text):
+        vigenere_matrix = []
+        alphabet = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
+        decrypted_text = ""
+        key = key.upper()
+        encrypted_text = encrypted_text.upper()
+
+        # Crear la matriz de Vigenère
+        for i in range(len(alphabet)):
+            row = alphabet[i:] + alphabet[:i]
+            vigenere_matrix.append(list(row))
+
+        countText = 0
+        countKey = 0
+
+        while countText < len(encrypted_text):
+            # Encontrar la fila correspondiente a la clave
+            i = 0
+            while i < len(alphabet):
+                if key[countKey] == vigenere_matrix[i][0]:
+                    break
+                i += 1
+
+            # Encontrar la columna que contiene la letra cifrada
+            j = 0
+            while j < len(alphabet):
+                if encrypted_text[countText] == vigenere_matrix[i][j]:
+                    decrypted_text += vigenere_matrix[0][j]
+                    countText += 1
+                    countKey = (countKey + 1) % len(key)
+                    break
+                j += 1
+
+        self.textToEncrypt.setPlainText(decrypted_text)
+
 
     def generate_cesar_cipher(self, key, text):
         alphabet = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
@@ -70,34 +163,57 @@ class MainView(QMainWindow):
 
         self.decryptedText.setPlainText(alphabet_aux + "\n" +custom_alphabet + "\n" +encrypted_text)
 
+    # def generate_vigenere_cipher(self, key, text):
+    #     vigenere_matrix = []
+    #     alphabet = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
+    #     encrypted_text = ""
+    #     key = key.upper()
+    #     text = text.upper()
+
+    #     for i in range(len(alphabet)):
+    #         row = alphabet[i:] + alphabet[:i]
+    #         vigenere_matrix.append(list(row))
+
+    #     countText = 0
+    #     countKey = 0
+
+    #     while countText < len(text):
+    #         j = 0
+    #         while j < len(alphabet):
+    #             if text[countText] == vigenere_matrix[0][j]:
+    #                 i = 0
+    #                 while i < len(alphabet):
+    #                     if key[countKey] == vigenere_matrix[i][0]:
+    #                         encrypted_text += vigenere_matrix[i][j]
+    #                         countText += 1
+    #                         countKey = (countKey + 1) % len(key)
+    #                         break
+    #                     i += 1
+    #                 break
+    #             j += 1
+
+    #     self.decryptedText.setPlainText(encrypted_text)
+
     def generate_vigenere_cipher(self, key, text):
-        vigenere_matrix = []
         alphabet = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
         encrypted_text = ""
         key = key.upper()
         text = text.upper()
 
-        for i in range(len(alphabet)):
-            row = alphabet[i:] + alphabet[:i]
-            vigenere_matrix.append(list(row))
+        key_length = len(key)
+        alphabet_length = len(alphabet)
 
-        countText = 0
-        countKey = 0
+        for i in range(len(text)):
+            if text[i] in alphabet:
+                # Encontrar la posición de la letra en el texto y en la clave
+                text_pos = alphabet.index(text[i])
+                key_pos = alphabet.index(key[i % key_length])
 
-        while countText < len(text):
-            j = 0
-            while j < len(alphabet):
-                if text[countText] == vigenere_matrix[0][j]:
-                    i = 0
-                    while i < len(alphabet):
-                        if key[countKey] == vigenere_matrix[i][0]:
-                            encrypted_text += vigenere_matrix[i][j]
-                            countText += 1
-                            countKey = (countKey + 1) % len(key)
-                            break
-                        i += 1
-                    break
-                j += 1
+                # Calcular la posición de la letra cifrada
+                encrypted_pos = (text_pos + key_pos) % alphabet_length
+                encrypted_text += alphabet[encrypted_pos]
+            else:
+                encrypted_text += text[i]  # Manejar espacios u otros caracteres
 
         self.decryptedText.setPlainText(encrypted_text)
 
