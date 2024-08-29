@@ -105,7 +105,12 @@
               </property>
               <item>
                <property name="text">
-                <string>Cifrado César</string>
+                <string>Cifrado César con palabra clave</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Cifrado César con secuencia</string>
                </property>
               </item>
               <item>
