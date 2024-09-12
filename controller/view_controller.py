@@ -15,10 +15,9 @@ class MainView(QMainWindow):
     def toggle_key_input(self):
         cipher_type = self.cipherType.currentText()
         if cipher_type == "Cifrado César con secuencia":
-            self.keyLabel.setText("Elegir número de secuencia:")
-            self.keyInput.setPlaceholderText("Ingrese un número (1-25)")
-            self.keyInput.show()
-            self.keyLabel.show()
+      
+            self.keyInput.hide()
+            self.keyLabel.hide()
         else:
             self.keyLabel.setText("Clave:")
             self.keyInput.setPlaceholderText("")
@@ -31,11 +30,9 @@ class MainView(QMainWindow):
 
         if cipher_type == "Cifrado César con secuencia":
             try:
-                sequence_number = int(self.keyInput.text())
-                if 1 <= sequence_number <= 27:
-                    self.generate_cesar_cipher_with_sequence(text_to_encrypt, sequence_number)
-                else:
-                    self.show_error_message("Por favor ingrese un número válido (1-27).")
+                sequence_number = random.randint(1, 27)
+                self.generate_cesar_cipher_with_sequence(text_to_encrypt, sequence_number)
+            
             except ValueError:
                 self.show_error_message("Por favor ingrese un número válido.")
         else:
@@ -43,7 +40,7 @@ class MainView(QMainWindow):
             if cipher_type == "Cifrado César con palabra clave":
                 self.generate_cesar_cipher(key_input, text_to_encrypt)
             elif cipher_type == "Cifrado Vigenère":
-                self.generate_vigenere_cipher(key_input, text_to_encrypt)
+                self.generate_vigenere_autoclave_cipher(key_input, text_to_encrypt)
     
     def desencrypt_text(self):
         text_to_desencrypt = self.decryptedText.toPlainText().upper()
@@ -194,8 +191,8 @@ class MainView(QMainWindow):
 
     #     self.decryptedText.setPlainText(encrypted_text)
 
-    def generate_vigenere_cipher(self, key, text):
-        alphabet = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
+    def generate_vigenere_autoclave_cipher(self, key, text):
+        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         encrypted_text = ""
         key = key.upper()
         text = text.upper()
@@ -207,13 +204,22 @@ class MainView(QMainWindow):
             if text[i] in alphabet:
                 # Encontrar la posición de la letra en el texto y en la clave
                 text_pos = alphabet.index(text[i])
-                key_pos = alphabet.index(key[i % key_length])
+                if key[i % key_length] in alphabet:
+                    key_pos = alphabet.index(key[i % key_length])
+                else:
+                    key_pos = 0  # Manejar caracteres no alfabéticos en la clave
 
                 # Calcular la posición de la letra cifrada
                 encrypted_pos = (text_pos + key_pos) % alphabet_length
                 encrypted_text += alphabet[encrypted_pos]
+
+                # Extender la clave con el carácter cifrado
+                key += alphabet[encrypted_pos]
+                key_length += 1
             else:
                 encrypted_text += text[i]  # Manejar espacios u otros caracteres
+                key += text[i]
+                key_length += 1
 
         self.decryptedText.setPlainText(encrypted_text)
 
@@ -228,7 +234,8 @@ class MainView(QMainWindow):
             else:
                 encrypted_text += char
             
-        self.decryptedText.setPlainText(alphabet + "\n" +alphabet_with_secuence + "\n" +encrypted_text)
+        self.decryptedText.setPlainText(encrypted_text)
+       # self.decryptedText.setPlainText(alphabet + "\n" +alphabet_with_secuence + "\n" +encrypted_text)
 
     def show_error_message(self,message):
         root = tk.Tk()
