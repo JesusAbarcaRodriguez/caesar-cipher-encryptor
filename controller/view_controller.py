@@ -56,7 +56,7 @@ class MainView(QMainWindow):
             if cipher_type == "Cifrado César con palabra clave":
                 self.brute_force_cesar_cipher_with_key(text_to_desencrypt, key_input)
             elif cipher_type == "Cifrado Vigenère":
-                self.decrypt_vigenere_cipher(key_input, text_to_desencrypt)
+                self.show_error_message("No se puede desencriptar un cifrado Vigenère.")
         
     def brute_force_cesar_cipher(self, encrypted_text):
         alphabet = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
@@ -98,39 +98,6 @@ class MainView(QMainWindow):
             results.append(f"Desplazamiento {sequence}: {decrypted_text}")
 
         self.textToEncrypt.setPlainText("\n\n".join(results))
-
-    def decrypt_vigenere_cipher(self, key, encrypted_text):
-        vigenere_matrix = []
-        alphabet = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
-        decrypted_text = ""
-        key = key.upper()
-        encrypted_text = encrypted_text.upper()
-
-        for i in range(len(alphabet)):
-            row = alphabet[i:] + alphabet[:i]
-            vigenere_matrix.append(list(row))
-
-        countText = 0
-        countKey = 0
-
-        while countText < len(encrypted_text):
-            i = 0
-            while i < len(alphabet):
-                if key[countKey] == vigenere_matrix[i][0]:
-                    break
-                i += 1
-
-            j = 0
-            while j < len(alphabet):
-                if encrypted_text[countText] == vigenere_matrix[i][j]:
-                    decrypted_text += vigenere_matrix[0][j]
-                    countText += 1
-                    countKey = (countKey + 1) % len(key)
-                    break
-                j += 1
-
-        self.textToEncrypt.setPlainText(decrypted_text)
-
 
     def generate_cesar_cipher(self, key, text):
         alphabet = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
