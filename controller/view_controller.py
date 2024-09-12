@@ -140,6 +140,7 @@ class MainView(QMainWindow):
         key = key.upper()
         text = text.upper()
 
+
         for char in key:
             alphabet = alphabet.replace(char, "")
 
@@ -155,7 +156,8 @@ class MainView(QMainWindow):
             else:
                 encrypted_text += char
 
-        self.decryptedText.setPlainText(alphabet_aux + "\n" +custom_alphabet + "\n" +encrypted_text)
+        #self.decryptedText.setPlainText(alphabet_aux + "\n" +custom_alphabet + "\n" +encrypted_text)
+        self.decryptedText.setPlainText(encrypted_text)
 
     # def generate_vigenere_cipher(self, key, text):
     #     vigenere_matrix = []
