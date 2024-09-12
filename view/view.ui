@@ -155,6 +155,20 @@
             </property>
            </widget>
           </item>
+          <!-- Botón de limpiar texto original -->
+          <item>
+           <widget class="QPushButton" name="clearTextToEncryptButton">
+            <property name="text">
+             <string>LIMPIAR TEXTO ORIGINAL</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">
+             background-color: rgb(255, 165, 0);
+             color: white;
+             </string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -195,6 +209,20 @@
             <property name="styleSheet">
              <string notr="true">
              background-color: rgb(255, 69, 0);
+             color: white;
+             </string>
+            </property>
+           </widget>
+          </item>
+          <!-- Botón de limpiar texto cifrado -->
+          <item>
+           <widget class="QPushButton" name="clearDecryptedTextButton">
+            <property name="text">
+             <string>LIMPIAR TEXTO CIFRADO</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">
+             background-color: rgb(255, 165, 0);
              color: white;
              </string>
             </property>

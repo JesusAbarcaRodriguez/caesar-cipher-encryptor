@@ -11,6 +11,14 @@ class MainView(QMainWindow):
         self.encryptButton.clicked.connect(self.encrypt_text)
         self.cipherType.currentIndexChanged.connect(self.toggle_key_input)
         self.decryptButton.clicked.connect(self.desencrypt_text)
+        self.clearTextToEncryptButton.clicked.connect(self.clear_text_to_encrypt)
+        self.clearDecryptedTextButton.clicked.connect(self.clear_decrypted_text)
+
+    def clear_text_to_encrypt(self):
+        self.textToEncrypt.clear()
+    
+    def clear_decrypted_text(self):
+        self.decryptedText.clear()
 
     def toggle_key_input(self):
         cipher_type = self.cipherType.currentText()
