@@ -80,11 +80,11 @@ class MainView(QMainWindow):
         alphabet = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
         results = []
 
-        # Crear un alfabeto modificado basado en la palabra clave
-        key = ''.join(sorted(set(key.upper()), key=key.index))  # Remover duplicados y mantener orden
+        
+        key = ''.join(sorted(set(key.upper()), key=key.index)) 
         alphabet_modificado = key + ''.join([char for char in alphabet if char not in key])
 
-        # Aplicar fuerza bruta probando todos los desplazamientos posibles
+
         for sequence in range(1, 28):
             decrypted_text = ""
             alphabet_with_secuence = alphabet_modificado[sequence:] + alphabet_modificado[:sequence]
@@ -106,7 +106,6 @@ class MainView(QMainWindow):
         key = key.upper()
         encrypted_text = encrypted_text.upper()
 
-        # Crear la matriz de Vigenère
         for i in range(len(alphabet)):
             row = alphabet[i:] + alphabet[:i]
             vigenere_matrix.append(list(row))
@@ -115,14 +114,12 @@ class MainView(QMainWindow):
         countKey = 0
 
         while countText < len(encrypted_text):
-            # Encontrar la fila correspondiente a la clave
             i = 0
             while i < len(alphabet):
                 if key[countKey] == vigenere_matrix[i][0]:
                     break
                 i += 1
 
-            # Encontrar la columna que contiene la letra cifrada
             j = 0
             while j < len(alphabet):
                 if encrypted_text[countText] == vigenere_matrix[i][j]:
@@ -202,22 +199,21 @@ class MainView(QMainWindow):
 
         for i in range(len(text)):
             if text[i] in alphabet:
-                # Encontrar la posición de la letra en el texto y en la clave
                 text_pos = alphabet.index(text[i])
                 if key[i % key_length] in alphabet:
                     key_pos = alphabet.index(key[i % key_length])
                 else:
-                    key_pos = 0  # Manejar caracteres no alfabéticos en la clave
+                    key_pos = 0 
 
-                # Calcular la posición de la letra cifrada
+           
                 encrypted_pos = (text_pos + key_pos) % alphabet_length
                 encrypted_text += alphabet[encrypted_pos]
 
-                # Extender la clave con el carácter cifrado
+                
                 key += alphabet[encrypted_pos]
                 key_length += 1
             else:
-                encrypted_text += text[i]  # Manejar espacios u otros caracteres
+                encrypted_text += text[i]
                 key += text[i]
                 key_length += 1
 
@@ -233,7 +229,7 @@ class MainView(QMainWindow):
                 encrypted_text += alphabet_with_secuence[pos]
             else:
                 encrypted_text += char
-            
+    
         self.decryptedText.setPlainText(encrypted_text)
        # self.decryptedText.setPlainText(alphabet + "\n" +alphabet_with_secuence + "\n" +encrypted_text)
 
